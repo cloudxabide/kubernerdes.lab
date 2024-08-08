@@ -32,11 +32,6 @@ EOF3
      --values trivy-values.yaml \
      --version 0.24.0
 
-
-
-
-
-
 # Inspect created VulnerabilityReports by:
     kubectl get vulnerabilityreports --all-namespaces -o wide
 
@@ -81,9 +76,9 @@ kubectl apply -f trivy-operator-svc.yaml
 kubectl config set-context --current --namespace=trivy-system
 kubectl get all 
 
-
 helm list -n trivy-system
 
+cd -
 kubectl config set-context --current --namespace=default
 
 exit 0
@@ -92,9 +87,6 @@ helm install trivy-operator aqua/trivy-operator \
   --namespace trivy-system \
   --create-namespace \
   --version 0.21.4
-
-
-
 
 helm repo add aquasecurity https://aquasecurity.github.io/helm-charts/
 helm repo update
