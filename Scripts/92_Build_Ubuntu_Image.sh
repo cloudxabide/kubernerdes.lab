@@ -127,7 +127,7 @@ scp /home/image-builder/ubuntu-2204-kube-1-29.gz mansible@10.10.12.10:/var/www/h
 exit 0
 
 #################### #################### #################### #################### 
-#   START HERE # REPEATABLE SECTION HERE: BareMetal
+#   START HERE # REPEATABLE SECTION HERE: vsphere 
 #################### #################### #################### #################### 
 
 manual_versioning() {
