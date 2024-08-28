@@ -149,7 +149,12 @@ echo "EKSA_RELEASE_VERSION: $EKSA_RELEASE_VERSION"
 echo " rm -rf /home/image-builder/images/eks-anywhere-build-tooling; image-builder build --os $OS --os-version $OS_VERSION --hypervisor $HYPERVISOR --release-channel $RELEASE_CHANNEL --eksa-release $EKSA_RELEASE_VERSION --vsphere-config vsphere.json "
  rm -rf /home/image-builder/images/eks-anywhere-build-tooling; image-builder build --os $OS --os-version $OS_VERSION --hypervisor $HYPERVISOR --release-channel $RELEASE_CHANNEL --eksa-release $EKSA_RELEASE_VERSION --vsphere-config vsphere.json
 
-
 exit 0
 
 NOTE:  The reason you likely do not want to use your Admin Host for building images:  imgage-builder relies on KVM/QEMU which enables DHCP for the libvirt stack.  This will cause a conflict when you run the installer and it deploys the "boots" container which has its own DHCP/PXE environment.
+
+TIP:  I will occasionally need to run, because of dependency issues
+```
+export EKSA_SKIP_VALIDATE_DEPENDENCIES=true
+```
+
