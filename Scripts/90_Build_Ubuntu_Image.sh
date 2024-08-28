@@ -97,7 +97,9 @@ export EKSA_RELEASE_VERSION=$(curl -sL https://anywhere-assets.eks.amazonaws.com
 mkdir ~/.bashrc.d
 image-builder completion bash > ~/.bashrc.d/image-builder
 
-## REPEATABLE SECTION HERE
+#################### #################### #################### #################### 
+#   START HERE # REPEATABLE SECTION HERE: BareMetal
+#################### #################### #################### #################### 
 ### Cleanup
 # rm -rf ${HOME}/eks-anywhere-build-tooling
 
@@ -121,6 +123,32 @@ echo "image-builder build --os $OS --os-version $OS_VERSION --hypervisor $HYPERV
 image-builder build --os $OS --os-version $OS_VERSION --hypervisor $HYPERVISOR --release-channel $RELEASE_CHANNEL --eksa-release $EKSA_RELEASE_VERSION
 
 scp /home/image-builder/ubuntu-2204-kube-1-29.gz mansible@10.10.12.10:/var/www/html/
+
+exit 0
+
+#################### #################### #################### #################### 
+#   START HERE # REPEATABLE SECTION HERE: BareMetal
+#################### #################### #################### #################### 
+
+manual_versioning() {
+export EKSA_RELEASE_VERSION=v0.19.0 # Manually define version
+EKSA_RELEASE_VERSION=v0.18.0; RELEASE_CHANNEL="1-28"
+EKSA_RELEASE_VERSION=v0.19.0; RELEASE_CHANNEL="1-29"
+}
+
+# Set some params
+export OS=ubuntu
+export OS_VERSION=22.04
+export HYPERVISOR=vsphere
+export RELEASE_CHANNEL="1-29"
+export EKSA_RELEASE_VERSION=$(curl -sL https://anywhere-assets.eks.amazonaws.com/releases/eks-a/manifest.yaml | yq ".spec.latestVersion")
+echo "EKSA_RELEASE_VERSION: $EKSA_RELEASE_VERSION"
+# BUILD_TOOLING_COMMIT=$(curl -s $BUNDLE_MANIFEST_URL | yq ".spec.versionsBundles[0].eksD.gitCommit")
+
+# export EKSA_SKIP_VALIDATE_DEPENDENCIES=true
+echo " rm -rf /home/image-builder/images/eks-anywhere-build-tooling; image-builder build --os $OS --os-version $OS_VERSION --hypervisor $HYPERVISOR --release-channel $RELEASE_CHANNEL --eksa-release $EKSA_RELEASE_VERSION --vsphere-config vsphere.json "
+ rm -rf /home/image-builder/images/eks-anywhere-build-tooling; image-builder build --os $OS --os-version $OS_VERSION --hypervisor $HYPERVISOR --release-channel $RELEASE_CHANNEL --eksa-release $EKSA_RELEASE_VERSION --vsphere-config vsphere.json
+
 
 exit 0
 
