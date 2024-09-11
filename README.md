@@ -28,9 +28,9 @@ This implementation pattern represents an "edge deployment" facilitating a hybri
 
 Firstly, you should grab the example "ENV.vars" file and update it with your own values (or continue using the user/repo from this repo
 
-
+replace <GIT_OWNER> with the Git Owner where the repo is being stored, then run the following:
 ```
-git clone https://github.com/jaradtke-aws/kubernerdes.lab.git
+git clone https://github.com/<GIT_OWNER>/kubernerdes.lab.git
 cd kubernerdes.lab
 vi Files/ENV.vars
 . ./Files/ENV.vars
