@@ -54,9 +54,9 @@ fi
 EOF
 
 #  Update my shell environment (optional)
-curl https://raw.githubusercontent.com/cloudxabide/devops/main/Files/.bashrc.d_common | tee ~/.bashrc.d/common
-curl https://raw.githubusercontent.com/cloudxabide/devops/main/Files/.bashrc.d_Ubuntu | tee ~/.bashrc.d/Ubuntu
-curl https://raw.githubusercontent.com/cloudxabide/devops/main/Files/.bashrc.d_K8s | tee ~/.bashrc.d/K8s
+curl https://raw.githubusercontent.com/GIT_OWNER/devops/main/Files/.bashrc.d_common | tee ~/.bashrc.d/common
+curl https://raw.githubusercontent.com/GIT_OWNER/devops/main/Files/.bashrc.d_Ubuntu | tee ~/.bashrc.d/Ubuntu
+curl https://raw.githubusercontent.com/GIT_OWNER/devops/main/Files/.bashrc.d_K8s | tee ~/.bashrc.d/K8s
 . ~/.bashrc
 
 # Enable Firewall (if you use Ubuntu firewall)
@@ -106,9 +106,9 @@ install_desktop() {
 }
 
 # Create directories to clone this project repo to (for pull-only access - and this optional)
-mkdir -p $HOME/Repositories/Personal/cloudxabide/; cd $_
-git clone https://github.com/cloudxabide/kubernerdes.lab.git
-ln -s $HOME/Repositories/Personal/cloudxabide/kubernerdes.lab $HOME
+mkdir -p $HOME/Repositories/Personal/GIT_OWNER/; cd $_
+git clone https://github.com/GIT_OWNER/kubernerdes.lab.git
+ln -s $HOME/Repositories/Personal/GIT_OWNER/kubernerdes.lab $HOME
 cd $HOME
 
 # Install Trivy (from Aquasecurity)

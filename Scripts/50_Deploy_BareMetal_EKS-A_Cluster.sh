@@ -31,12 +31,12 @@ EOF
 ############# ############# ############# ############# ############# #############
 ## START HERE ## START HERE ## START HERE ## START HERE ## START HERE ## START HERE
 ############# ############# ############# ############# ############# #############
-## Cleanup existing Docker Containers 
+## Cleanup existing Docker Containers (will show errors if no containers are running)
 cd
 docker kill $(docker ps -a | egrep 'boots|eks' | awk '{ print $1 }' | grep -v CONTAINER)
 docker rm $(docker ps -a | egrep 'boots|eks' | awk '{ print $1 }' | grep -v CONTAINER)
 
-# Cluster-Specific Variables 
+# Set Cluster-Specific Variables 
 OS=ubuntu
 NODE_LAYOUT="3_0"
 KUBEVERSION="1.28"
@@ -45,7 +45,7 @@ export CLUSTER_CONFIG=${CLUSTER_NAME}.yaml
 export CLUSTER_CONFIG_SOURCE="example-clusterconfig-${OS}-${KUBEVERSION}-${NODE_LAYOUT}.yaml" # Name of file in Git Repo
 export TINKERBELL_HOST_IP=10.10.12.101
 
-# NEED TO MAKE THIS MOVE THE DIR TO AN ARCHIVE OR SOMETHING
+# Create a Cluster-Specific directory for this install
 TODAY=`date +%F`
 EKS_BASE=$HOME/eksa/$CLUSTER_NAME
 EKS_DIR=$EKS_BASE/${TODAY}
@@ -57,23 +57,26 @@ ln -s $EKS_DIR ${EKS_BASE}/latest
 cd ${EKS_DIR}
 mkdir $CLUSTER_NAME 
 
-# This is a static URL (i.e. I cannot reference $REPO as this is the file that sets the value)
-[ ! -f ENV.vars ] && { curl -o ENV.vars https://raw.githubusercontent.com/cloudxabide/kubernerdes.lab/main/Files/ENV.vars; }
+# Retrieve Cluster-Specific config - this a static URL (i.e. I cannot reference $REPO as this is the file that sets the value)
+[ ! -f ENV.vars ] && { curl -o ENV.vars https://raw.githubusercontent.com/GIT_OWNER/kubernerdes.lab/main/Files/ENV.vars; }
 . ./ENV.vars
+echo "Repo URL: $REPO"
 
-# The following is how you create a default clusterconfig
+# The following command is how you create a default clusterconfig (created as a reference)
 eksctl anywhere generate clusterconfig $CLUSTER_NAME --provider tinkerbell > $CLUSTER_CONFIG.default
 
-# Retrieve the hardware inventory csv file
-curl -o hardware.csv ${REPO}main/Files/hardware-${NODE_LAYOUT}.csv
-
-# However, I have one that I have already modified for my needs
+# However, I have one that I have already modified for this cluster
 curl -o $CLUSTER_CONFIG.vanilla ${REPO}main/Files/$CLUSTER_CONFIG_SOURCE
 
-# Retrieve the pub key for the "kubernerdes.lab" domain
+# Retrieve the hardware inventory csv file (custom to environment)
+curl -o hardware.csv ${REPO}main/Files/hardware-${NODE_LAYOUT}.csv
+cat hardware.csv
+
+# Retrieve the SSH pub key for the "kubernerdes.lab" domain (this will be needed once cluster has deployed)
 export MY_SSH_KEY=$(cat ~/.ssh/*kubernerdes.lab.pub)
+# Update the cluster config with my own configuration values
 envsubst <  $CLUSTER_CONFIG.vanilla > $CLUSTER_CONFIG
-cat $CLUSTER_CONFIG
+# Compare the original with the updated
 sdiff $CLUSTER_CONFIG.vanilla $CLUSTER_CONFIG | egrep '\|'
 
 ## Let's build our cluster

@@ -95,7 +95,7 @@ mkdir $CLUSTER_NAME
 
 # The following is how you create a default clusterconfig
 eksctl anywhere generate clusterconfig $CLUSTER_NAME --provider vsphere > $CLUSTER_CONFIG.generated
-curl -o $CLUSTER_CONFIG.vanilla https://raw.githubusercontent.com/cloudxabide/kubernerdes.lab/main/Files/$CLUSTER_CONFIG_SOURCE
+curl -o $CLUSTER_CONFIG.vanilla https://raw.githubusercontent.com/GIT_OWNER/kubernerdes.lab/main/Files/$CLUSTER_CONFIG_SOURCE
 
 # Retrieve the pub key for the "kubernedes.lab" domain
 export MY_SSH_KEY=$(cat ~/.ssh/*kubernerdes.lab.pub)

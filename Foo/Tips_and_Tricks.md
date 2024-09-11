@@ -67,7 +67,7 @@ kubectl get hardware -n eksa-system --show-labels
 ```
 kubectl create namespace openebstest
 kubectl config set-context --current --namespace=openebstest
-curl -o busybox_example_app_persisent_storage.yaml https://raw.githubusercontent.com/cloudxabide/kubernerdes/main/Files/busybox_example_app_persisent_storage.yaml
+curl -o busybox_example_app_persisent_storage.yaml https://raw.githubusercontent.com/GIT_OWNER/kubernerdes.lab/main/Files/busybox_example_app_persisent_storage.yaml
 kubectl apply -f busybox_example_app_persisent_storage.yaml
 # Watch the pods until the busybox pod is "Running", then exit
 while sleep 1; do kubectl get pods -n openebstest | grep Running && break ; done
