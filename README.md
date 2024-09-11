@@ -24,6 +24,22 @@ This implementation pattern represents an "edge deployment" facilitating a hybri
 
 ![Environment Overview](Images/APG-EKS-Anywhere-enclave.drawio.png)
 
+## Getting Started
+
+Firstly, you should grab the example "ENV.vars" file and update it with your own values (or continue using the user/repo from this repo
+
+
+```
+git clone https://github.com/jaradtke-aws/kubernerdes.lab.git
+cd kubernerdes.lab
+vi Files/ENV.vars
+. ./Files/ENV.vars
+cd Scripts
+```
+
+I have created the scripts using the old Init Script notation of numerically numbered files.  You can decided which ones you would like to run, or not.
+
+
 
 ## References and Notes
 | [Containerized  Data Importer - VDDK How To](https://github.com/kubevirt/containerized-data-importer/blob/main/doc/datavolumes.md#vddk-data-volume) | Details regarding the process to transfer Data Volumes between platforms |
