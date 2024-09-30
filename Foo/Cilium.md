@@ -24,6 +24,7 @@ Since EKS-A ships with Cilium, but a version that does not have all funcationali
 
 ```
 helm repo add cilium https://helm.cilium.io/
+```
 
 ```
 CILIUM_DEFAULT_VERSION=$(cilium version | grep "(default)" | awk -F\: '{ print $2 }' | sed 's/ //')
