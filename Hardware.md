@@ -3,7 +3,7 @@
 
 | Cost | Qty | Total | Object       | Purpose                   | Link |
 |:----:|:----|:------|:-------------|:--------------------------|:-----|
-| 359  | 1   | 359   | Intel NUC    | Admin Host                | [Amazon - Intel NUC NUC10i7FNK1](https://www.amazon.com/gp/product/B083GGZ6TG/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&th=1) |
+| 359  | 1   | 359   | Intel NUC    | Admin Host                | [Amazon - Intel NUC NUC10i7FNK](https://www.amazon.com/s?k=NUC10i7FNK) |
 | 359  | 3   | 1077  | Intel NUC    | Kubernetes Host           | [Amazon - Intel NUC NUC10i7FNH](https://www.amazon.com/NUC10i7FNH-i7-10710U-Processor-Thunderbolt-Ethernet/dp/B0CNBGDXRM)  |
 | 359  | 1   |   XYZ | Intel NUC    | VMware (ESXi/vSphere) Host           | [Amazon - Intel NUC NUC10i7FNH](https://www.amazon.com/NUC10i7FNH-i7-10710U-Processor-Thunderbolt-Ethernet/dp/B0CNBGDXRM)  |
 | 148  | 5   |  XYZ   | Memory DIMM  | Host Memory               | [Corsair Vengeance Performance SODIMM Memory 64GB (2x32GB) DDR4 2933MHz CL19 Unbuffered for 8th Generation or Newer Intel Core™ i7, and AMD Ryzen 4000 Series Notebooks](https://www.amazon.com/gp/product/B08GSRD34Y/ref=ppx_od_dt_b_asin_title_s00?ie=UTF8&psc=1) | 
