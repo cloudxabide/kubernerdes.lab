@@ -89,6 +89,8 @@ do
   echo ""
 done
 
+######################################################
+# BEGINNING OF FOR-LOOP
 # Configure the devices
 for HOST in $HOSTS
 do
@@ -130,6 +132,7 @@ sudo systemctl enable --now var-openebs.mount"
 
 done
 # END OF FOR-LOOP
+######################################################
 
 # Make sure the volume/fileystem is created/mounted
 for HOST in $HOSTS
