@@ -22,6 +22,8 @@ This repository will provide an opinionated deployment to create an environemnt 
 ## Overview
 This implementation pattern represents an "edge deployment" facilitating a hybrid cloud architecture.  This will enabling you to run containers and virtual machines on gear that requires lower resources (space, power, cooling, etc...) in an enclave capable of being independent of external resources.
 
+I, intentionally, did not do any of this work using Terraform or Ansible, etc.. and instead used BASH shell scripting so that you can see what is actually occurring (rather than simply seeing: SUCCESS! after some magic stuff happens)
+
 ![Environment Overview](Images/APG-EKS-Anywhere-enclave.drawio.png)
 
 ## Getting Started
