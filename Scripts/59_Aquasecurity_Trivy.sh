@@ -83,6 +83,8 @@ kubectl config set-context --current --namespace=default
 
 exit 0
 
+#############################33
+
 helm install trivy-operator aqua/trivy-operator \
   --namespace trivy-system \
   --create-namespace \
