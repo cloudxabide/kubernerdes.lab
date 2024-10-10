@@ -27,6 +27,7 @@ kubectl -n kube-system exec ds/cilium -- cilium version
 ########################################
 # Install Cilium CLI
 install_Cilium_CLI() {
+cilium version; echo
 CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable-v0.14.txt)
 CLI_ARCH=amd64
 if [ "$(uname -m)" = "aarch64" ]; then CLI_ARCH=arm64; fi
@@ -123,8 +124,8 @@ kubectl get nodes -o wide # make sure all nodes are "READY"
 while sleep 2; do { echo "Waiting for connectivity..."; kubectl -n kube-system exec ds/cilium -- cilium-health status | egrep "Connection timed out"; } || break; done 
 
 ## Test Cilium Connectivity
+echo "Running Cilium Connectivity Test - This will take a few minutes." 
 date  > cilium_connectivity_test.out
-echo "Running Cilium Connectivity Test - This will take a few minutes." >> cilium_connectivity_test.out
 cilium connectivity test >> cilium_connectivity_test.out
 date >> cilium_connectivity_test.out
 cd -

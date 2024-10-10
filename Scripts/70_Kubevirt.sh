@@ -8,7 +8,6 @@
 #  References:
 #       Notes: 
 
-
 kubectl get events -A --sort-by=.lastTimestamp
 
 install_kubervirt() {
@@ -27,6 +26,7 @@ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVI
 # wait until all KubeVirt components are up
 kubectl -n kubevirt wait kubevirt/kubevirt --for condition=Available
 
+echo "# This step usually takes around 90 seconds"
 kubectl get kubevirt.kubevirt.io/kubevirt --namespace kubevirt --output=jsonpath="{.status.phase}"
 while sleep 2; do echo; ( kubectl get all -n kubevirt  | grep Deploying; ) || break; done
 }
