@@ -5,7 +5,7 @@
 #      Status: Absolutely a Work in Progress | I anticipate adding more content
 # Assumptions:
 #        Todo:
-#  References:
+#  References: https://kubevirt.io/quickstart_cloud/
 #       Notes: 
 
 # Check status/health of cluster
@@ -27,9 +27,13 @@ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVI
 # wait until all KubeVirt components are up
 kubectl -n kubevirt wait kubevirt/kubevirt --for condition=Available
 
+# Check the deployment status (Should return "Deployed")
 echo "# This step usually takes around 90 seconds - wait for kubevirt to be 'Deployed'"
 kubectl get kubevirt.kubevirt.io/kubevirt --namespace kubevirt --output=jsonpath="{.status.phase}"
 while sleep 2; do echo; ( kubectl get all -n kubevirt  | grep Deploying; ) || break; done
+
+# Check all the components
+kubectl get all -n kubevirt
 }
 
 install_virtctl() {
