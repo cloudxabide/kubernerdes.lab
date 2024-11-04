@@ -13,7 +13,7 @@ mkdir -p ~/eksa/$CLUSTER_NAME/; cd $_
 [ -d latest ] && rm latest
 mkdir ${DADATE};
 ln -s ${DADATE} latest; cd $_
-
+pwd
 
 eksctl anywhere generate clusterconfig $CLUSTER_NAME --provider docker > $CLUSTER_NAME.yaml
 MyTweaks() {
@@ -29,10 +29,10 @@ unset KUBECONFIG
 eksctl anywhere create cluster -f $CLUSTER_NAME.yaml
 
 # To access K8s during the install
-export KUBECONFIG=$(find $PWD/ -name $CLUSTER_NAME.kind.kubeconfig)
+export KUBECONFIG=$(find $PWD/ |grep "$CLUSTER_NAME.kind.kubeconfig")
 
 # Access K8s post install
-export KUBECONFIG=$(find $PWD/  | grep "${CLUSTER_NAME}.eks-a-cluster.kubeconfig")
+export KUBECONFIG=$(find $PWD/ | grep "${CLUSTER_NAME}.eks-a-cluster.kubeconfig")
 
 # Some quick troubleshooting tips
 kubectl get pods -A | awk '{ print "kubectl logs --tail 3 " $2 " -n " $1  "; echo; echo; echo" }' | sh - | more
