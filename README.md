@@ -24,7 +24,7 @@ This implementation pattern represents an "edge deployment" facilitating a hybri
 
 I, intentionally, did not do any of this work using Terraform or Ansible, etc.. and instead used BASH shell scripting so that you can see what is actually occurring (rather than simply seeing: SUCCESS! after some magic stuff happens)
 
-![Environment Overview](Images/APG-EKS-Anywhere-enclave.drawio.png)
+![Environment Overview](Images/Kubernerdes-Lab-Overview.drawio.png)
 
 ## Getting Started
 
