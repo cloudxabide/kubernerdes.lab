@@ -3,8 +3,8 @@
 #     Purpose: To replace EKS-A included Cilium with Cilium OSS
 #        Date: 2024-03-01
 #      Status: GTG, I think
-#              Ready to test (this is still a bit clunky, therefore it should be cut-and-paste and 
-#                interactively installed)
+#              Ready to test (this is still a bit clunky, therefore it 
+#              should be cut-and-paste and interactively installed)
 # Assumptions:
 #        Todo: Update process to update Cilium and Hubble CLI, if needed
 #  References: https://isovalent.com/blog/post/cilium-eks-anywhere/
@@ -26,29 +26,62 @@ kubectl -n kube-system exec ds/cilium -- cilium version
 
 ########################################
 # Install Cilium CLI
+# https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/
 install_Cilium_CLI() {
 cilium version; echo
 CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable-v0.14.txt)
-CLI_ARCH=amd64
-if [ "$(uname -m)" = "aarch64" ]; then CLI_ARCH=arm64; fi
-curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
-sha256sum --check cilium-linux-${CLI_ARCH}.tar.gz.sha256sum 
-sudo tar xzvfC cilium-linux-${CLI_ARCH}.tar.gz /usr/local/bin
+#CLI_ARCH=amd64
+case $(uname -m) in 
+  aarch64) CLI_ARCH=arm64;;
+  x86_64) CLI_ARCH=amd64;;
+esac
+
+case $(uname) in 
+  Linux)  
+    curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
+    sha256sum --check cilium-linux-${CLI_ARCH}.tar.gz.sha256sum 
+    sudo tar xzvfC cilium-linux-${CLI_ARCH}.tar.gz /usr/local/bin
+    ;;
+  Darwin) 
+    curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-darwin-${CLI_ARCH}.tar.gz{,.sha256sum}
+    shasum -a 256 -c cilium-darwin-${CLI_ARCH}.tar.gz.sha256sum
+    sudo tar xzvfC cilium-darwin-${CLI_ARCH}.tar.gz /usr/local/bin
+  ;;
+esac
+
 cilium version; echo
 }
 
 # Install Hubble CLI
+# https://docs.cilium.io/en/stable/observability/hubble/setup/
 install_Hubble_CLI() {
 export HUBBLE_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/hubble/master/stable.txt)
-HUBBLE_ARCH=amd64
-if [ "$(uname -m)" = "aarch64" ]; then HUBBLE_ARCH=arm64; fi
-curl -L --fail --remote-name-all https://github.com/cilium/hubble/releases/download/$HUBBLE_VERSION/hubble-linux-${HUBBLE_ARCH}.tar.gz{,.sha256sum}
-sha256sum --check hubble-linux-${HUBBLE_ARCH}.tar.gz.sha256sum
-sudo tar xzvfC hubble-linux-${HUBBLE_ARCH}.tar.gz /usr/local/bin
-rm hubble-linux-${HUBBLE_ARCH}.tar.gz{,.sha256sum}
+case $(uname) in 
+  Darwin)
+    HUBBLE_ARCH=amd64
+    if [ "$(uname -m)" = "arm64" ]; then HUBBLE_ARCH=arm64; fi
+    curl -L --fail --remote-name-all https://github.com/cilium/hubble/releases/download/$HUBBLE_VERSION/hubble-darwin-${HUBBLE_ARCH}.tar.gz{,.sha256sum}
+    shasum -a 256 -c hubble-darwin-${HUBBLE_ARCH}.tar.gz.sha256sum
+    sudo tar xzvfC hubble-darwin-${HUBBLE_ARCH}.tar.gz /usr/local/bin
+    rm hubble-darwin-${HUBBLE_ARCH}.tar.gz{,.sha256sum}
+  ;;
+  Linux)
+    HUBBLE_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/hubble/master/stable.txt)
+    HUBBLE_ARCH=amd64
+    if [ "$(uname -m)" = "aarch64" ]; then HUBBLE_ARCH=arm64; fi
+    curl -L --fail --remote-name-all https://github.com/cilium/hubble/releases/download/$HUBBLE_VERSION/hubble-linux-${HUBBLE_ARCH}.tar.gz{,.sha256sum}
+    sha256sum --check hubble-linux-${HUBBLE_ARCH}.tar.gz.sha256sum
+    sudo tar xzvfC hubble-linux-${HUBBLE_ARCH}.tar.gz /usr/local/bin
+    rm hubble-linux-${HUBBLE_ARCH}.tar.gz{,.sha256sum}
+  ;;
+esac
 hubble version; echo
 }
 ########################################
+
+case $(uname) in
+  Darwin) echo "Please follow Foo/Kind_Cilium.md to install Cilium in Kind on your Mac"; exit 0;;
+esac
 
 # Add Cilium Helm Repo
 helm repo add cilium https://helm.cilium.io/
@@ -66,8 +99,10 @@ helm template cilium/cilium --version $CILIUM_DEFAULT_VERSION  \
 kubectl create -f cilium-preflight.yaml
 
 # Check for the daemonset status - initially will not be ready
-# Then start a while loop until the first one starts (and there is no longer a '0' in the output from the command)
-# NOTE:  I need to improve this logic to check for the "DESIRED" number and wait until the correct number is running
+# Then start a while loop until the first one starts (and there is no longer a '0' in 
+#   the output from the command)
+# NOTE:  I need to improve this logic to check for the "DESIRED" number and wait 
+#   until the correct number is running
 kubectl get daemonset -n kube-system | sed -n '1p;/cilium/p'
 while sleep 2; do echo; ( kubectl get daemonset -n kube-system | sed -n '1p;/cilium/p' | grep -w 0; ) || break; done
 
@@ -101,7 +136,15 @@ kubectl delete svc cilium-agent -n kube-system
 clean-up-accounts
 
 # helm install cilium cilium/cilium --version 1.13.3 \
-MYINTERFACE=eno1
+case $(uname) in
+  Darwin)
+    MYINTERFACE=eth0
+  ;;
+  Linux)
+    # Ubuntu
+    MYINTERFACE=eno1
+  ;;
+esac
 [ -z $CILIUM_DEFAULT_VERSION ] && { CILIUM_DEFAULT_VERSION=$(cilium version | grep "(default)" | awk -F\: '{ print $2 }' | sed 's/ //'); }
 
 ## NOTE:  Prometheus add-on is not (yet) tested (2024-07-02)    

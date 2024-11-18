@@ -27,6 +27,10 @@ docker rm $(docker ps -a | awk '{ print $1 }' | grep -v CONTAINER)
 rm -rf kubernerdes-eksa eksa-cli-logs
 ```
 
+##
+```
+kubectl debug node/mgmt-gm6m6 -it --image ubuntu
+```
 
 # You will see 3 containers start and run (an ECR container, the KIND cluster, then "boots")
 ```
