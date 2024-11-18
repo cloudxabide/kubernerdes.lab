@@ -4,9 +4,10 @@ Lab environment consisting of Amazon EKS Anywhere and VMware vSphere for hosting
 ## Status
 Status:  Work In Progress
 
-I am redoing my "lab content" and separating the different environments in to repos 
-[eksa.kubernerdes.lab](../eksa.kubernerdes.lab) (original repo)
-rancher.kubernerdes.lab
+I am redoing my "lab content" and separating the different environments in to repos aligned with the tech - a single repo would be difficult to manage and likely be overwhelming and confusing.
+
+[eksa.kubernerdes.lab](https://github.com/cloudxabide/eksa.kubernerdes.lab) (original repo)
+[rancher.kubernerdes.lab](https://github.com/cloudxabide/rancher.kubernerdes.lab) 
 
 
 ## Overview
