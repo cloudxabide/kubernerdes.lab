@@ -43,9 +43,9 @@ docker logs -f <container id of "boots" container>
 docker logs -f $(docker ps -a | grep boots | awk '{ print $1 }')
 ```
 
-## Display all images currently deployed as pod
+## Display all images currently deployed as a pod
 ```
-kubectl get pods -A --no-headers | awk '{ print $1 " " $2 }' | while read NAMESPACE NAME; do echo "$NAME"; kubectl get pods --no-headers -n $NAMESPACE $NAME -o=jsonpath="{.spec.containers[*].image}"; echo; done
+kubectl get pods -A --no-headers | awk '{ print $1 " " $2 }' | while read NAMESPACE NAME; do echo -n "$NAME | "; kubectl get pods --no-headers -n $NAMESPACE $NAME -o=jsonpath="{.spec.containers[*].image}"; echo; done
 ```
 
 # Random "shortcuts" that *I* can use to run Kubectl
