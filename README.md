@@ -1,5 +1,9 @@
 # kubernerdes.lab
-Lab environment consisting of Amazon EKS Anywhere and VMware vSphere for hosting containers and VMs
+
+Lab environment for hosting containers and VMs consisting of:
+* Amazon EKS Anywhere 
+* VMware vSphere 
+* SUSE Rancher
 
 ## Status
 Status:  Work In Progress
