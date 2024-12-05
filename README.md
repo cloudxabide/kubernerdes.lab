@@ -11,8 +11,7 @@ Status:  Work In Progress
 I am redoing my "lab content" and separating the different environments in to repos aligned with the tech - a single repo would be difficult to manage and likely be overwhelming and confusing.
 
 [eksa.kubernerdes.lab](https://github.com/cloudxabide/eksa.kubernerdes.lab) (original repo)  
-[rancher.kubernerdes.lab](https://github.com/cloudxabide/rancher.kubernerdes.lab) 
-
+[k3s.kubernerdes.lab](https://github.com/cloudxabide/k3s.kubernerdes.lab) 
 
 ## Overview
 This implementation pattern represents an "edge deployment" facilitating a hybrid cloud architecture.  This will enabling you to run containers and virtual machines on gear that requires lower resources (space, power, cooling, etc...) in an enclave capable of being independent of external resources.
@@ -23,7 +22,6 @@ I, intentionally, did not do any of this work using Terraform or Ansible, etc.. 
 
 ## Purpose 
 This repository will provide an opinionated deployment to create an environemnt to run containers and virtual machines on commodity hardware using Open Source Software where possible.  In general, this approach will rely on the standard implementation guidance and focus on the integration of all the different technologies.
-
 
 ## Getting Started
 
