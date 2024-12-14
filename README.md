@@ -10,8 +10,12 @@ Status:  Work In Progress
 
 I am redoing my "lab content" and separating the different environments in to repos aligned with the tech - a single repo would be difficult to manage and likely be overwhelming and confusing.
 
+*.kubernerdes.lab => my on-premesis (HomeLab) environments
+*.kubernerdes.com => public (AWS) environments
+
 [eksa.kubernerdes.lab](https://github.com/cloudxabide/eksa.kubernerdes.lab) (original repo)  
 [k3s.kubernerdes.lab](https://github.com/cloudxabide/k3s.kubernerdes.lab) 
+[rancher.kubernerdes.com](https://github.com/cloudxabide/k3s.kubernerdes.com) 
 
 ## Overview
 This implementation pattern represents an "edge deployment" facilitating a hybrid cloud architecture.  This will enabling you to run containers and virtual machines on gear that requires lower resources (space, power, cooling, etc...) in an enclave capable of being independent of external resources.
