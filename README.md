@@ -10,8 +10,8 @@ Status:  Work In Progress
 
 I am redoing my "lab content" and separating the different environments in to repos aligned with the tech - a single repo would be difficult to manage and likely be overwhelming and confusing.
 
-*.kubernerdes.lab => my on-premesis (HomeLab) environments
-*.kubernerdes.com => public (AWS) environments
+*.kubernerdes.lab => my on-premesis (HomeLab) environment (internal domains)  
+*.kubernerdes.com => public (AWS) environments (external domains)
 
 [eksa.kubernerdes.lab](https://github.com/cloudxabide/eksa.kubernerdes.lab) (original repo)  
 [k3s.kubernerdes.lab](https://github.com/cloudxabide/k3s.kubernerdes.lab) 
