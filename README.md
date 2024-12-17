@@ -17,7 +17,9 @@ I am redoing my "lab content" and separating the different environments in to re
 
 [k3s.kubernerdes.lab](https://github.com/cloudxabide/k3s.kubernerdes.lab)   
 
-[rancher.kubernerdes.com](https://github.com/cloudxabide/k3s.kubernerdes.com) 
+[rancher.kubernerdes.com](https://github.com/cloudxabide/rancher.kubernerdes.com) 
+
+[openshift.kubernerdes.com](https://github.com/cloudxabide/openshift.kubernerdes.com) 
 
 ## Overview
 This implementation pattern represents an "edge deployment" facilitating a hybrid cloud architecture.  This will enabling you to run containers and virtual machines on gear that requires lower resources (space, power, cooling, etc...) in an enclave capable of being independent of external resources.
