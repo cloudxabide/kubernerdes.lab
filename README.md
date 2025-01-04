@@ -13,13 +13,14 @@ I am redoing my "lab content" and separating the different environments in to re
 *.kubernerdes.lab => my on-premesis (HomeLab) environment (internal domains)  
 *.kubernerdes.com => public (AWS) environments (external domains)
 
-[eksa.kubernerdes.lab](https://github.com/cloudxabide/eksa.kubernerdes.lab) (original repo)  
-
-[k3s.kubernerdes.lab](https://github.com/cloudxabide/k3s.kubernerdes.lab)   
-
-[rancher.kubernerdes.com](https://github.com/cloudxabide/rancher.kubernerdes.com) 
-
-[openshift.kubernerdes.com](https://github.com/cloudxabide/openshift.kubernerdes.com) 
+| Repo Name | URL | Purpose |
+|:----------|:----|:--------|
+| eks.kubernerdes.com | https://github.com/cloudxabide/eks.kubernerdes.com | Amazon EKS and EKS Hybrid Node |
+| eksa.kubernerdes.lab | https://github.com/cloudxabide/eksa.kubernerdes.lab | Amazon EKS Anywhere |
+| k3s.kubernerdes.lab | https://github.com/cloudxabide/k3s.kubernerdes.lab | SUSE K3s |
+| kubernerdes.lab | https://github.com/cloudxabide/kubernerdes.lab | Main Repo Kubernerdes Project(s) |
+| openshift.kubernerdes.com | https://github.com/cloudxabide/openshift.kubernerdes.com | Red Hat OpenShift |
+| www.kubernerdes.com | https://github.com/cloudxabide/www.kubernerdes.com | Website content for https://www.kubernerdes.com/ |
 
 ## Overview
 This implementation pattern represents an "edge deployment" facilitating a hybrid cloud architecture.  This will enabling you to run containers and virtual machines on gear that requires lower resources (space, power, cooling, etc...) in an enclave capable of being independent of external resources.
