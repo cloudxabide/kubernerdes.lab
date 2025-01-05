@@ -11,9 +11,11 @@ Lab environment for hosting containers and VMs consisting of:
 ## Status
 Status:  Work In Progress
 
+## Overview
+
 I am redoing my "lab content" and separating the different environments in to repos aligned with the tech - a single repo would be difficult to manage and likely be overwhelming and confusing.
 
-*.kubernerdes.lab => my on-premesis (HomeLab) environment (internal domains)  
+*.kubernerdes.lab => my on-premesis (HomeLab) environment (internal domains)
 *.kubernerdes.com => public (AWS) environments (external domains)
 
 | Repo Name | URL | Purpose |
@@ -25,10 +27,14 @@ I am redoing my "lab content" and separating the different environments in to re
 | openshift.kubernerdes.com | https://github.com/cloudxabide/openshift.kubernerdes.com | Red Hat OpenShift |
 | www.kubernerdes.com | https://github.com/cloudxabide/www.kubernerdes.com | Website content for https://www.kubernerdes.com/ |
 
-## Overview
-This implementation pattern represents an "edge deployment" facilitating a hybrid cloud architecture.  This will enabling you to run containers and virtual machines on gear that requires lower resources (space, power, cooling, etc...) in an enclave capable of being independent of external resources.
 
-I, intentionally, did not do any of this work using Terraform or Ansible, etc.. and instead used BASH shell scripting so that you can see what is actually occurring (rather than simply seeing: SUCCESS! after some magic stuff happens)
+Amazon EKS - 
+Amazon EKS Hybrid Nodes -
+Amazon EKS-Anywhere - This implementation pattern represents an "edge deployment" facilitating a hybrid cloud architecture.  This will enable you to run containers and virtual machines on gear that requires lower resources (space, power, cooling, etc...) in an enclave capable of being independent of external resources.
+Red Hat OpenShift - 
+SpectroCloud -
+
+In this project I have intentionally tried to rely on things like BASH shell scripting so that you can see what is actually occurring (rather than simply seeing: SUCCESS! after some magic stuff happens from running some Terraform )
 
 ![High Level Overview](Images/Kubernerdes-HighLevel.drawio.png)
 ![Environment Overview](Images/APG-EKS-Anywhere-enclave.drawio.png)
