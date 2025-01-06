@@ -15,7 +15,7 @@ Status:  Work In Progress
 
 I am redoing my "lab content" and separating the different environments in to repos aligned with the tech - a single repo would be difficult to manage and likely be overwhelming and confusing.
 
-*.kubernerdes.lab => my on-premesis (HomeLab) environment (internal domains)
+*.kubernerdes.lab => my on-premesis (HomeLab) environment (internal domains)  
 *.kubernerdes.com => public (AWS) environments (external domains)
 
 | Repo Name | URL | Purpose |
