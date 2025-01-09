@@ -18,6 +18,7 @@ Since I will have multiple disparate environments that may communicate between e
 
 | ClusterName        | machineNetworkCidr | PodCidr/clusterNetwork | prefix | ServiceNetwork | 
 |:-------------------|:-------------------|:-----------------------|:-------|:---------------|
+| vsphere-eksa       | 10.10.12.0/22      | 192.168.1.0/16         | /24    | 10.96.0.0/12   |
 | kubernerdes-eksa   | 10.10.12.0/22      | 192.168.0.0/16         | /24    | 10.96.0.0/12   |
 | eksdemo            | 172.17.0.0/16      | 192.168.0.0/16         | N/A    | 10.96.0.0/12   |
 | openshift          | 172.18.0.0/16      | 10.128.0.0/14          | /23    | 172.30.0.0/16  |
