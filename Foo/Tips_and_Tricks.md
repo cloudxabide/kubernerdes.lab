@@ -11,7 +11,7 @@ for NS in $(kubectl get ns | grep -v ^NAME | awk '{ print $1 }'); do echo "Names
 ### Installer Process
 ### Watch the logs of the last command until you see...
 You will see 3 containers start and run (an ECR container, the KIND cluster, then "boots")
-#   "Creating new workload cluster", then...
+   "Creating new workload cluster", then...
 ```
 watch docker ps -a
 
@@ -20,35 +20,36 @@ docker logs -f $(docker ps -a | grep boots | awk '{ print $1 }')
 
 ### You can then start powering on your NUC and boot from the network and watch the Docker logs
 
-### Cleanup
+#### Cleanup
 ```
 docker kill $(docker ps -a | awk '{ print $1 }' | grep -v CONTAINER)
 docker rm $(docker ps -a | awk '{ print $1 }' | grep -v CONTAINER)
 rm -rf kubernerdes-eksa eksa-cli-logs
 ```
 
-##
+#### Debug a node
 ```
 kubectl debug node/mgmt-gm6m6 -it --image ubuntu
 ```
 
-# You will see 3 containers start and run (an ECR container, the KIND cluster, then "boots")
+You will see 3 containers start and run (an ECR container, the KIND cluster, then "boots")
 ```
 watch docker ps -a
 
 ```
-# Go back to the window where the "watch" command was running and kill the watch.  Then run
+
+Go back to the window where the "watch" command was running and kill the watch.  Then run
 ```
 docker logs -f <container id of "boots" container>
 docker logs -f $(docker ps -a | grep boots | awk '{ print $1 }')
 ```
 
-## Display all images currently deployed as a pod
+Display all images currently deployed as a pod
 ```
 kubectl get pods -A --no-headers | awk '{ print $1 " " $2 }' | while read NAMESPACE NAME; do echo -n "$NAME | "; kubectl get pods --no-headers -n $NAMESPACE $NAME -o=jsonpath="{.spec.containers[*].image}"; echo; done
 ```
 
-# Random "shortcuts" that *I* can use to run Kubectl
+ Random "shortcuts" that *I* can use to run Kubectl
 ```
 export KUBECONFIG=${PWD}/${CLUSTER_NAME}/${CLUSTER_NAME}-eks-a-cluster.kubeconfig
 export KUBECONFIG=$(find ~/DevOps/eksa -name '*kind.kubeconfig')
