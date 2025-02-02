@@ -37,7 +37,7 @@ SpectroCloud -
 In this project I have intentionally tried to rely on things like BASH shell scripting so that you can see what is actually occurring (rather than simply seeing: SUCCESS! after some magic stuff happens from running some Terraform )
 
 ![High Level Overview](Images/Kubernerdes-HighLevel.drawio.png)
-![Environment Overview](Images/APG-EKS-Anywhere-enclave.drawio.png)
+![Environment Overview](https://github.com/cloudxabide/eksa.kubernerdes.lab/blob/main/Images/APG-EKS-Anywhere-enclave.drawio.png)
 
 ## Purpose 
 This repository will provide an opinionated deployment to create an environemnt to run containers and virtual machines on commodity hardware using Open Source Software where possible.  In general, this approach will rely on the standard implementation guidance and focus on the integration of all the different technologies.
