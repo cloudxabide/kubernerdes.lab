@@ -1,15 +1,18 @@
 # kubernerdes.lab
 
+## Status
+Status:  Work In Progress
+
+## Purpose and Narrative
+This repository will provide an opinionated deployment to create an environemnt to run containers and virtual machines on commodity hardware using Open Source Software where possible.  In general, this approach will rely on the standard implementation guidance and focus on the integration of all the different technologies.
+
 Lab environment for hosting containers and VMs consisting of:
 
 * Amazon EKS, Amazon EKS Anywhere, Amazon EKS Hybrid Nodes
-* VMware vSphere 
+* VMware vSphere
 * SUSE Rancher
 * Red Hat OpenShift
-* SpectroCloud 
-
-## Status
-Status:  Work In Progress
+* SpectroCloud
 
 ## Overview
 
@@ -37,9 +40,6 @@ In this project I have intentionally tried to rely on things like BASH shell scr
 
 ![High Level Overview](Images/Kubernerdes-HighLevel.drawio.png)
 ![Environment Overview](https://github.com/cloudxabide/eksa.kubernerdes.lab/blob/main/Images/APG-EKS-Anywhere-enclave.drawio.png)
-
-## Purpose 
-This repository will provide an opinionated deployment to create an environemnt to run containers and virtual machines on commodity hardware using Open Source Software where possible.  In general, this approach will rely on the standard implementation guidance and focus on the integration of all the different technologies.
 
 ## Getting Started
 Determine which part of my Kubernerdes Lab experience interests you, and check out the repo (listed above).
