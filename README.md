@@ -27,11 +27,11 @@ I am redoing my "lab content" and separating the different environments in to re
 | openshift.kubernerdes.com | https://github.com/cloudxabide/openshift.kubernerdes.com | Red Hat OpenShift |
 | www.kubernerdes.com | https://github.com/cloudxabide/www.kubernerdes.com | Website content for https://www.kubernerdes.com/ |
 
-Amazon EKS -  
-Amazon EKS Hybrid Nodes -
-Amazon EKS-Anywhere - This implementation pattern represents an "edge deployment" facilitating a hybrid cloud architecture.  This will enable you to run containers and virtual machines on gear that requires lower resources (space, power, cooling, etc...) in an enclave capable of being independent of external resources.
-Red Hat OpenShift - 
-SpectroCloud -
+Amazon EKS -   
+Amazon EKS Hybrid Nodes -  
+Amazon EKS-Anywhere - This implementation pattern represents an "edge deployment" facilitating a hybrid cloud architecture.  This will enable you to run containers and virtual machines on gear that requires lower resources (space, power, cooling, etc...) in an enclave capable of being independent of external resources.  
+Red Hat OpenShift -   
+SpectroCloud -  
 
 In this project I have intentionally tried to rely on things like BASH shell scripting so that you can see what is actually occurring (rather than simply seeing: SUCCESS! after some magic stuff happens from running some Terraform or Ansible)
 
