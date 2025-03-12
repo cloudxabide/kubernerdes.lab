@@ -1,10 +1,7 @@
 # kubernerdes.lab
 
-## Status
-Status:  Work In Progress
-
 ## Purpose and Narrative
-This repository will provide an opinionated deployment to create an environemnt to run containers and virtual machines on commodity hardware using Open Source Software where possible.  In general, this approach will rely on the standard implementation guidance and focus on the integration of all the different technologies.
+This repository will provide an overview of an opinionated deployment to create an environemnt to run containers and virtual machines on commodity hardware using Open Source Software where possible.  In general, this approach will rely on the standard implementation guidance of each respective vendor and focus on the integration of all the different technologies.  I will identify particular optimizations or patterns that I found useful.
 
 Lab environment for hosting containers and VMs consisting of:
 
@@ -13,6 +10,9 @@ Lab environment for hosting containers and VMs consisting of:
 * SUSE Rancher
 * Red Hat OpenShift
 * SpectroCloud
+
+## Status
+Status:  Work In Progress
 
 ## Overview
 
