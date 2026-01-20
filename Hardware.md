@@ -3,16 +3,16 @@
 ## Currently Used
 | System         | Purpose           | Model            | CPU | CPU model       | Mem | Disk0 | Disk1 |
 |:---------------|:------------------|:-----------------|:----|:----------------|:----|:------|:------|
-| kubernerd      | Admin Host        | NUC13ANHi7       | 16  | i7-1360P        | 64  | 1024  | 1024  |
+| enclave        | Admin Host        | NUC13ANHi7       | 16  | i7-1360P        | 64  | 1024  | 1024  |
 |----------------|-------------------|------------------|-----|-----------------|-----|-------|-------|
-| nuc-01         | Harvester         | NUC13ANHi7       | 16  | i7-1360P        | 64  | 1024  | 1024  |
-| nuc-02         | Harvester         | NUC13ANHi7       | 16  | i7-1360P        | 64  | 1024  | 1024  |
-| nuc-03         | Harvester         | NUC13ANHi7       | 16  | i7-1360P        | 64  | 1024  | 1024  |
+| enclave-01     | Harvester         | NUC13ANHi7       | 16  | i7-1360P        | 64  | 1024  | 1024  |
+| enclave-02     | Harvester         | NUC13ANHi7       | 16  | i7-1360P        | 64  | 1024  | 1024  |
+| enclave-03     | Harvester         | NUC13ANHi7       | 16  | i7-1360P        | 64  | 1024  | 1024  |
 |----------------|-------------------|------------------|-----|-----------------|-----|-------|-------|
-| nuc-04         | Harvester         | NUC10i7FNH       | 12  | i7-10710U       | 64  | 1024  | 2048  |
-| nuc-05         | Harvester         | NUC10i7FNH       | 12  | i7-10710U       | 64  | 1024  | 2048  |
-| nuc-06         | Harvester         | NUC10i7FNH       | 12  | i7-10710U       | 64  | 1024  | 2048  |
-| nuc-07	 | Admin Host        | NUC10i7FNK       | 12  | i7-10710U       | 64  | 1024  | N/A   |
+| nuc-01         | Harvester         | NUC10i7FNH       | 12  | i7-10710U       | 64  | 1024  | 2048  |
+| nuc-02         | Harvester         | NUC10i7FNH       | 12  | i7-10710U       | 64  | 1024  | 2048  |
+| nuc-03         | Harvester         | NUC10i7FNH       | 12  | i7-10710U       | 64  | 1024  | 2048  |
+| kubernerd	 | Admin Host (SLES) | NUC10i7FNK       | 12  | i7-10710U       | 64  | 1024  | N/A   |
 |----------------|-------------------|------------------|-----|-----------------|-----|-------|-------|
 | asus-pc-01 	 | Harvester         | Asus Z490        | 20  | i9-10850K       | 128 | 256   | 1024  | 
 | asus-pc-02	 | Harvester         | Asus Z490        | 20  | i9-10850K       | 128 | 256   | 1024  | 
