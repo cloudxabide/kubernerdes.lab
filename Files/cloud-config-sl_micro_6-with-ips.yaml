@@ -1,0 +1,153 @@
+---
+
+# SL-Micro 6.1 Cloud-Init Configuration
+# Note: SL-Micro is an immutable OS, so some configurations require special handling
+
+# Create user accounts with their configuration
+users:
+  - name: sles
+    # Password hash for user authentication (generated with mkpasswd or similar)
+    passwd: $6$jzXjealo/tBAK5SQ$pe.GNKlS8QwjBEH/qffIGe5THP36AGLtyaZDLFohjCrFiu2bhHWU2PmGDL4MS4ZJPANfEDNlE9kJAsFXy8Na/0
+    # Allow password authentication (false = unlocked)
+    lock_passwd: false
+    # Assign user to groups
+    groups: users
+    # Set default shell
+    shell: /bin/bash
+    # Add SSH public keys for passwordless authentication
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCozGnmSeEzFQovxzvwgLaQmfE5/eGDfzKHMwofs1rvdef6WD89ubQjh2bFDe69IPGh0kV93QraLUXL1hDa3J+k9LIhr7HqAg365bm3UtY7jIDADmAjDo8yVJ5oiSMvmgUlaw3REFjaMXwQXCddDVWhoWFk/gE1w/14/EbFfSJni9iohl+A76s5GRlVZXSTVb/zYxeQFAlstUaxQVFD8EGNcWI5Ptydgil+hlrA7k16qrkj+5l5muDkRLndcsR/zrpLy2cdNWmI6s/aGQ/IHpUmLf92AAIbzMskK4Asdno1RiuNFybfjoPomo1NlYh6J/VS2uEq4Zg4zWuVbl7yjTRx mansible@kubernerd
+
+# Commands to run after the system is configured
+runcmd:
+  # Enable and start the QEMU guest agent service immediately
+  - - systemctl
+    - enable
+    - --now
+    - qemu-guest-agent.service
+
+  # Configure static IP address based on hostname using systemd-networkd
+  - |
+    #!/bin/bash
+    # Use multiple methods to reliably get hostname
+    HOSTNAME=$(cat /etc/hostname 2>/dev/null || hostname)
+    IPADDR=""
+    GATEWAY="10.10.12.1"
+    DNS_DOMAIN="homelab.kubernerdes.com"
+
+    # Log for debugging
+    LOG_FILE="/var/log/static-ip-setup.log"
+    echo "========================================" | tee -a $LOG_FILE
+    echo "$(date): Starting static IP configuration" | tee -a $LOG_FILE
+    echo "Detected hostname: $HOSTNAME" | tee -a $LOG_FILE
+
+    # Determine IP address based on hostname
+    case "$HOSTNAME" in
+      harvester-edge-lb) IPADDR="10.10.12.91/22" ;;
+      harvester-dc-lb) IPADDR="10.10.12.92/22" ;;
+      rancher-01) IPADDR="10.10.12.211/22" ;;
+      rancher-02) IPADDR="10.10.12.212/22" ;;
+      rancher-03) IPADDR="10.10.12.213/22" ;;
+      observability-01) IPADDR="10.10.12.221/22" ;;
+      observability-02) IPADDR="10.10.12.222/22" ;;
+      observability-03) IPADDR="10.10.12.223/22" ;;
+      *)
+        echo "Unknown hostname: $HOSTNAME - skipping static IP configuration" | tee -a $LOG_FILE
+        exit 0
+        ;;
+    esac
+
+    echo "Target IP address: $IPADDR" | tee -a $LOG_FILE
+
+    # Find the primary network interface
+    IFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
+
+    if [ -z "$IFACE" ]; then
+      echo "ERROR: No network interface found" | tee -a $LOG_FILE
+      exit 1
+    fi
+
+    echo "Using network interface: $IFACE" | tee -a $LOG_FILE
+
+    # Disable cloud-init network configuration to prevent conflicts
+    # Do this BEFORE creating NetworkManager config
+    mkdir -p /etc/cloud/cloud.cfg.d
+    cat > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg <<EOF
+    network: {config: disabled}
+    EOF
+    echo "Disabled cloud-init network configuration" | tee -a $LOG_FILE
+
+    # Configure static IP using NetworkManager
+    # SL-Micro 6 uses NetworkManager for network configuration
+    echo "Configuring static IP with NetworkManager" | tee -a $LOG_FILE
+
+    # Extract IP and prefix from CIDR notation
+    IP_ONLY=${IPADDR%/*}
+    PREFIX=${IPADDR#*/}
+
+    # Get the current connection name
+    CONN_NAME=$(nmcli -t -f NAME,DEVICE connection show --active | grep "$IFACE" | cut -d: -f1)
+
+    if [ -z "$CONN_NAME" ]; then
+      CONN_NAME="$IFACE"
+      echo "No active connection found, will create new connection: $CONN_NAME" | tee -a $LOG_FILE
+    else
+      echo "Found active connection: $CONN_NAME" | tee -a $LOG_FILE
+    fi
+
+    # Delete existing connection if it exists to start fresh
+    nmcli connection delete "$CONN_NAME" 2>/dev/null || true
+
+    # Create new connection with static IP configuration
+    nmcli connection add type ethernet \
+      con-name "$CONN_NAME" \
+      ifname "$IFACE" \
+      ipv4.method manual \
+      ipv4.addresses "$IP_ONLY/$PREFIX" \
+      ipv4.gateway "$GATEWAY" \
+      ipv4.dns "10.10.12.6 10.10.12.7 8.8.8.8" \
+      ipv4.dns-search "$DNS_DOMAIN" \
+      connection.autoconnect yes
+
+    # Bring up the connection
+    nmcli connection up "$CONN_NAME"
+
+    echo "Configured $IFACE with IP address $IPADDR using NetworkManager" | tee -a $LOG_FILE
+    sleep 2
+
+    echo "Configured $IFACE with IP address $IPADDR" | tee -a $LOG_FILE
+    echo "Current IP addresses:" | tee -a $LOG_FILE
+    ip addr show $IFACE | tee -a $LOG_FILE
+    echo "========================================" | tee -a $LOG_FILE
+
+# Configure NTP (Network Time Protocol) for time synchronization
+# SL-Micro uses systemd-timesyncd by default
+ntp:
+  # Enable NTP service
+  enabled: true
+  # List of NTP servers to synchronize time with
+  servers:
+    - 0.pool.suse.ntp.org
+    - 1.pool.suse.ntp.org
+    - 2.pool.suse.ntp.org
+
+# Create or modify files on the system
+write_files:
+  # Create sudoers configuration file for sles user
+  - path: /etc/sudoers.d/sles
+    # Grant sles user full sudo privileges without password prompt
+    content: |
+      sles ALL=(ALL) NOPASSWD:ALL
+    # Set file ownership
+    owner: root:root
+    # Set file permissions (read-only for owner and group, no access for others)
+    permissions: '0440'
+
+  # Configure systemd-timesyncd for the specified NTP servers
+  - path: /etc/systemd/timesyncd.conf.d/suse-ntp.conf
+    content: |
+      [Time]
+      NTP=0.pool.suse.ntp.org 1.pool.suse.ntp.org 2.pool.suse.ntp.org
+      FallbackNTP=time.cloudflare.com
+    owner: root:root
+    permissions: '0644'

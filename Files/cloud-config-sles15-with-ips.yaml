@@ -1,0 +1,106 @@
+#cloud-config
+
+# Enable system package updates during cloud-init (this section will not work because the host has no repos available as it is not reg'd yet) - removing for now
+# package_update: true
+
+# Create user accounts with their configuration
+users:
+  - name: sles
+    # Password hash for user authentication (generated with mkpasswd or similar)
+    passwd: $6$jzXjealo/tBAK5SQ$pe.GNKlS8QwjBEH/qffIGe5THP36AGLtyaZDLFohjCrFiu2bhHWU2PmGDL4MS4ZJPANfEDNlE9kJAsFXy8Na/0
+    # Allow password authentication (false = unlocked)
+    lock_passwd: false
+    # Assign user to groups
+    groups: users
+    # Set default shell
+    shell: /bin/bash
+    # Add SSH public keys for passwordless authentication
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCozGnmSeEzFQovxzvwgLaQmfE5/eGDfzKHMwofs1rvdef6WD89ubQjh2bFDe69IPGh0kV93QraLUXL1hDa3J+k9LIhr7HqAg365bm3UtY7jIDADmAjDo8yVJ5oiSMvmgUlaw3REFjaMXwQXCddDVWhoWFk/gE1w/14/EbFfSJni9iohl+A76s5GRlVZXSTVb/zYxeQFAlstUaxQVFD8EGNcWI5Ptydgil+hlrA7k16qrkj+5l5muDkRLndcsR/zrpLy2cdNWmI6s/aGQ/IHpUmLf92AAIbzMskK4Asdno1RiuNFybfjoPomo1NlYh6J/VS2uEq4Zg4zWuVbl7yjTRx mansible@kubernerd
+
+# Commands to run after the system is configured
+runcmd:
+  # Enable and start the QEMU guest agent service immediately
+  - - systemctl
+    - enable
+    - --now
+    - qemu-guest-agent.service
+
+  # Update DNS search domain to kubernerdes.lab in network configuration
+  - sed -i 's/^NETCONFIG_DNS_STATIC_SEARCHLIST=.*/NETCONFIG_DNS_STATIC_SEARCHLIST="kubernerdes.lab"/' /etc/sysconfig/network/config
+
+  # Configure static DNS servers (local DNS servers 10.10.12.8, 10.10.12.9, and fallback to Google DNS 8.8.8.8)
+  - sed -i 's/^NETCONFIG_DNS_STATIC_SERVERS=.*/NETCONFIG_DNS_STATIC_SERVERS="10.10.12.8 10.10.12.9 8.8.8.8"/' /etc/sysconfig/network/config
+
+  # Apply network configuration changes
+  - netconfig update -f
+
+  # Configure static IP address based on hostname
+  - |
+    #!/bin/bash
+    HOSTNAME=$(hostname)
+    IPADDR=""
+    GATEWAY="10.10.12.1"
+
+    # Determine IP address based on hostname
+    case "$HOSTNAME" in
+      librenms)  IPADDR="10.10.12.12/22" ;;
+      harvester-edge-lb) IPADDR="10.10.12.91/22" ;;
+      harvester-dc-lb) IPADDR="10.10.12.92/22" ;;
+      rancher-01) IPADDR="10.10.12.211/22" ;;
+      rancher-02) IPADDR="10.10.12.212/22" ;;
+      rancher-03) IPADDR="10.10.12.213/22" ;;
+      observability-01) IPADDR="10.10.12.221/22" ;;
+      observability-02) IPADDR="10.10.12.222/22" ;;
+      observability-03) IPADDR="10.10.12.223/22" ;;
+      *)
+        echo "Unknown hostname: $HOSTNAME - skipping static IP configuration"
+        exit 0
+        ;;
+    esac
+
+    # Find the primary network interface
+    IFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
+
+    if [ -z "$IFACE" ]; then
+      echo "No network interface found"
+      exit 1
+    fi
+
+    # Configure static IP using wicked
+    cat > /etc/sysconfig/network/ifcfg-$IFACE <<EOF
+    BOOTPROTO='static'
+    STARTMODE='auto'
+    IPADDR='${IPADDR%/*}'
+    NETMASK='255.255.252.0'
+    GATEWAY='$GATEWAY'
+    EOF
+
+    # Restart network to apply changes
+    wicked ifdown $IFACE
+    wicked ifup $IFACE
+
+    echo "Configured $IFACE with IP address $IPADDR"
+
+# Configure NTP (Network Time Protocol) for time synchronization
+ntp:
+  # Enable NTP service
+  enabled: true
+  # List of NTP servers to synchronize time with
+  servers:
+    - 0.pool.suse.ntp.org
+    - 1.pool.suse.ntp.org
+    - 2.pool.suse.ntp.org
+
+# Create or modify files on the system
+write_files:
+  # Create sudoers configuration file for sles user
+  - path: /etc/sudoers.d/sles
+    # Grant sles user full sudo privileges without password prompt
+    content: |
+      sles ALL=(ALL) NOPASSWD:ALL
+    # Set file ownership
+    owner: root:root
+    # Set file permissions (read-only for owner and group, no access for others)
+    permissions: '0440'
+
