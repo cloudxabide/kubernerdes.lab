@@ -76,3 +76,13 @@ openssl s_client \
   | sed 's/://g' \
   | tr '[:upper:]' '[:lower:]'
 ```
+
+## Cluster Delete
+
+If you manage to find yourself with a "stuck cluster delete"....
+```
+kubectl get clusters.management.cattle.io # find the cluster you want to delete
+export CLUSTERID=“c-xxxxxxxxx” #
+kubectl patch clusters.management.cattle.io $CLUSTERID -p ‘{“metadata”:{“finalizers”:}}’ --type=merge
+kubectl delete clusters.management.cattle.io $CLUSTERID
+```
